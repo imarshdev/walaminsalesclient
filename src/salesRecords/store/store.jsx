@@ -11,33 +11,6 @@ export default function Store() {
   const [newProductName, setNewProductName] = useState("");
   const [newProductQuantity, setNewProductQuantity] = useState(0); // Default to 0
 
-const downloadJsonFile = async () => {
-  try {
-    const response = await fetch(`${API_URL}/download`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `records-${new Date().toLocaleDateString("en-US").replace(/\//g, "-")}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error("Error downloading the file:", error);
-  }
-};
-
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await fetch(`${PRODUCTS_URL}`);
@@ -139,13 +112,10 @@ const downloadJsonFile = async () => {
         ))}
       </div>
       <br />
+      <br />
+      <br />
       <button onClick={() => setNewOpen(true)}>
         <p>Add New Product</p>
-      </button>
-      <br />
-      <br />
-      <button onClick={downloadJsonFile}>
-        <p>Download Current records JSON file</p>
       </button>
     </div>
   );
