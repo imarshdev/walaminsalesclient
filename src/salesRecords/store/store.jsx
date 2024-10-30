@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import "./store.css";
 // API URL for your backend
-const API_URL = "http://localhost:5000/api/records";
-const PRODUCTS_URL = "http://localhost:5000/api/products";
+const API_URL = "https://walaminsalesserver.onrender.com/api/records";
+const PRODUCTS_URL = "https://walaminsalesserver.onrender.com/api/products";
 
 export default function Store() {
   const [products, setProducts] = useState([]);

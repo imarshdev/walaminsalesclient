@@ -4,8 +4,8 @@ import { Dialog } from "primereact/dialog";
 import { BiEdit } from "react-icons/bi";
 
 // API URLs for your backend
-const API_URL = "http://localhost:5000/api/records";
-const PRODUCTS_URL = "http://localhost:5000/api/products";
+const API_URL = "https://walaminsalesserver.onrender.com/api/records";
+const PRODUCTS_URL = "https://walaminsalesserver.onrender.com/api/products";
 
 export default function Incoming() {
   const [visible, setVisible] = useState(false);
