@@ -11,34 +11,32 @@ export default function Store() {
   const [newProductName, setNewProductName] = useState("");
   const [newProductQuantity, setNewProductQuantity] = useState(0); // Default to 0
 
-  const downloadJsonFile = async () => {
-    try {
-      const response = await fetch(`${API_URL}/download`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      // Convert response to blob
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      // Create a link element, set its href to the blob URL, and trigger download
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "records.json"; // Filename for the downloaded file
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url); // Clean up
-    } catch (error) {
-      console.error("Error downloading the file:", error);
+const downloadJsonFile = async () => {
+  try {
+    const response = await fetch(`${API_URL}/download`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
-  };
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `records-${new Date().toLocaleDateString("en-US").replace(/\//g, "-")}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Error downloading the file:", error);
+  }
+};
 
   useEffect(() => {
     const fetchProducts = async () => {

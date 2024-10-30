@@ -5,9 +5,6 @@ import "./index.css";
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import {
-  BrowserRouter,
-  Routes,
-  Route,
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
