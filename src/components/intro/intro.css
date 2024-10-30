@@ -1,0 +1,23 @@
+.intro-container {
+    width: 100%;
+    height: 45vh;
+    box-sizing: border-box;
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 10%;
+}
+
+.carousel-container {
+    width: 100%;
+    aspect-ratio: 2/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-image {
+    height: 100%;
+}

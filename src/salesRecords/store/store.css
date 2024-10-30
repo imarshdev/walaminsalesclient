@@ -1,0 +1,24 @@
+.store-container{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 20px;
+}
+.product-items-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.product-items{
+    width: 33%;
+    height: 5rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #ccc;
+    justify-content: start;
+    align-items: start;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}

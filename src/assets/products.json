@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Kush Water",
+    "size": "20ltr",
+    "price": 10000
+  },
+  {
+    "name": "Kush Water",
+    "size": "10ltr",
+    "price": 6000
+  },
+  {
+    "name": "Kush Water",
+    "size": "5ltr",
+    "price": 3500
+  },
+  {
+    "name": "Tomato Paste",
+    "size": "400g",
+    "price": 4500
+  },
+  {
+    "name": "Tomato Paste",
+    "size": "200g",
+    "price": 2500
+  },
+  {
+    "name": "Eggs",
+    "size": "Tray of 30",
+    "price": 10000
+  },
+  {
+    "name": "Eggs",
+    "size": "Half Tray of 15",
+    "price": 5000
+  },
+  {
+    "name": "Noodles",
+    "size": "80g",
+    "price": 1500
+  },
+  {
+    "name": "Cooking Oil",
+    "size": "1ltr",
+    "price": 8500
+  },
+  {
+    "name": "Cooking Oil",
+    "size": "500ml",
+    "price": 4500
+  },
+  {
+    "name": "Sugar",
+    "size": "1kg",
+    "price": 4000
+  },
+  {
+    "name": "Rice",
+    "size": "5kg",
+    "price": 15000
+  },
+  {
+    "name": "Rice",
+    "size": "1kg",
+    "price": 3200
+  },
+  {
+    "name": "Salt",
+    "size": "1kg",
+    "price": 2000
+  },
+  {
+    "name": "Flour",
+    "size": "2kg",
+    "price": 7000
+  },
+  {
+    "name": "Detergent Powder",
+    "size": "1kg",
+    "price": 5000
+  },
+  {
+    "name": "Toothpaste",
+    "size": "100g",
+    "price": 2500
+  },
+  {
+    "name": "Milk",
+    "size": "500ml",
+    "price": 3000
+  },
+  {
+    "name": "Bread",
+    "size": "Standard Loaf",
+    "price": 3500
+  },
+  {
+    "name": "Butter",
+    "size": "250g",
+    "price": 8000
+  }
+]

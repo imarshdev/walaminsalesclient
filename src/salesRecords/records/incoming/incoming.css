@@ -1,0 +1,93 @@
+.incoming-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-record {
+    width: 10rem;
+    height: 4rem;
+    border-radius: 10px;
+    background-color: pink;
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+}
+
+.add-record-container {
+    width: 100%;
+    height: 150%;
+    box-sizing: border-box;
+    padding: 2rem 0px;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.m-0 {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+
+#record-input {
+    height: 2rem;
+    border: solid 0px transparent;
+    border-bottom: solid 1px #ccc;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    padding-left: 20px;
+    font-size: 14px;
+}
+
+#record-input:focus {
+    outline: none;
+}
+
+.add-record:focus {
+    outline: none;
+}
+
+.records {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.record-item {
+    width: 95%;
+    height: 3rem;
+    border-bottom: solid .5px lightgreen;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.record-item span{
+    width: 14.2%;
+    display: flex;
+    align-items: start;
+}
+.closing-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1rem;
+}
+
+.closing-button {
+    background-color: limegreen;
+    width: 40%;
+}
+
+.full-details-container{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+}
