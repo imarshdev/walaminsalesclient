@@ -7,13 +7,13 @@
 }
 
 .add-record {
-    width: 10rem;
+    width: 12rem;
     height: 4rem;
     border-radius: 10px;
     background-color: pink;
-    position: fixed;
+    position: absolute;
+    left: 1rem;
     bottom: 1rem;
-    right: 3rem;
 }
 
 .add-record-container { /* Corrected typo from 'add-record-conatiner' to 'add-record-container' */

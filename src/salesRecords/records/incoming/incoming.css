@@ -11,9 +11,6 @@
     height: 4rem;
     border-radius: 10px;
     background-color: pink;
-    position: absolute;
-    bottom: 3rem;
-    right: 3rem;
 }
 
 .add-record-container {

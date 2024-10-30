@@ -71,7 +71,6 @@ export default function Incoming() {
           />
         )}
       </Dialog>
-
       <h2>Incoming</h2>
       <div className="records">
         <div className="record-item header">
@@ -103,8 +102,9 @@ export default function Incoming() {
           </div>
         ))}
       </div>
-      <div style={{height: "6rem"}}></div>
+      <br />
       <AddRecordButton setVisible={setVisible} />
+      <div style={{height: "6rem"}}></div>
     </div>
   );
 }
