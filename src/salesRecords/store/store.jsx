@@ -10,6 +10,7 @@ export default function Store() {
   const [newOpen, setNewOpen] = useState(false);
   const [newProductName, setNewProductName] = useState("");
   const [newProductQuantity, setNewProductQuantity] = useState(0); // Default to 0
+  const [spinning, setSpinning] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -26,6 +27,7 @@ export default function Store() {
   }, [products]);
 
   const addNewProduct = async () => {
+    setSpinning(true);
     try {
       const response = await fetch(`${PRODUCTS_URL}`, {
         method: "POST",
@@ -44,6 +46,7 @@ export default function Store() {
       setProducts((prev) => [...prev, addedProduct]);
       setNewProductName("");
       setNewProductQuantity(0);
+      setSpinning(false);
       setNewOpen(false); // Close the dialog
     } catch (error) {
       console.error("Error adding product:", error);
@@ -90,7 +93,7 @@ export default function Store() {
           <br />
           <div className="closing-buttons">
             <button className="closing-button" onClick={addNewProduct}>
-              Add Product
+              {spinning ? "Adding..." : "Add Product"}
             </button>
             <button
               className="closing-button"
@@ -101,13 +104,17 @@ export default function Store() {
           </div>
         </div>
       </Dialog>
-      <p>Store</p>
       <br />
       <div className="product-items-container">
         {products.map((product, index) => (
           <div className="product-items" key={index}>
-            <span><b style={{marginRight: "15px"}}>Name:</b> {product.name}</span>
-            <span><b style={{marginRight: "15px"}}>Current Quantity:</b> {product.quantity}</span>
+            <span>
+              <b style={{ marginRight: "15px" }}>Name:</b> {product.name}
+            </span>
+            <span>
+              <b style={{ marginRight: "15px" }}>Current Quantity:</b>{" "}
+              {product.quantity}
+            </span>
           </div>
         ))}
       </div>
