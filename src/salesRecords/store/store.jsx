@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Dialog } from "primereact/dialog";
+import useLocalStorageState from "../../context/useLocalStorage";
 import "./store.css";
 // API URL for your backend
 const API_URL = "https://walaminsalesserver.onrender.com/api/records";
 const PRODUCTS_URL = "https://walaminsalesserver.onrender.com/api/products";
 
 export default function Store() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useLocalStorageState("products", []);
   const [newOpen, setNewOpen] = useState(false);
   const [newProductName, setNewProductName] = useState("");
   const [newProductQuantity, setNewProductQuantity] = useState(0); // Default to 0

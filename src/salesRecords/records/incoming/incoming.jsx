@@ -2,15 +2,19 @@ import React, { useState, useEffect, useRef } from "react";
 import "./incoming.css";
 import { Dialog } from "primereact/dialog";
 import { BiEdit } from "react-icons/bi";
+import useLocalStorageState from "../../../context/useLocalStorage";
 
 // API URLs for your backend
-const API_URL = "https://walaminsalesserver.onrender.com/api/records";
+const API_URL = "https://walaminsalesserver.onrender.com/api/records?type=incoming";
 const PRODUCTS_URL = "https://walaminsalesserver.onrender.com/api/products";
 
 export default function Incoming() {
   const [visible, setVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
-  const [incomingRecords, setIncomingRecords] = useState([]);
+  const [incomingRecords, setIncomingRecords] = useLocalStorageState(
+    "incomingRecords",
+    []
+  );
   const [selectedRecord, setSelectedRecord] = useState(null);
 
   // Fetch records from the backend on component mount
@@ -19,8 +23,8 @@ export default function Incoming() {
       try {
         const response = await fetch(`${API_URL}`);
         const data = await response.json();
-        setIncomingRecords(data.incomingRecords);
-        console.log(data.incomingRecords);
+        setIncomingRecords(data);
+        console.log("incoming", data);
       } catch (error) {
         console.error("Error fetching records:", error);
       }
@@ -104,7 +108,7 @@ export default function Incoming() {
       </div>
       <br />
       <AddRecordButton setVisible={setVisible} />
-      <div style={{height: "6rem"}}></div>
+      <div style={{ height: "6rem" }}></div>
     </div>
   );
 }
@@ -115,7 +119,7 @@ function AddRecord({ setVisible, setIncomingRecords }) {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch(`${PRODUCTS_URL}`);
+      const response = await fetch(`${PRODUCTS_URL}/incoming`);
       const data = await response.json();
       setProducts(data);
     };

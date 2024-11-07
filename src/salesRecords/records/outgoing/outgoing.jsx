@@ -2,16 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import "./outgoing.css"; // Update your CSS file name if needed
 import { Dialog } from "primereact/dialog";
 import { BiEdit } from "react-icons/bi";
+import useLocalStorageState from "../../../context/useLocalStorage";
 
 // API URLs for your backend
-const API_URL = "https://walaminsalesserver.onrender.com/api/records/"; // Adjust if necessary
+const API_URL = "https://walaminsalesserver.onrender.com/api/records?type=outgoing"; // Adjust if necessary
 const PRODUCTS_URL = "https://walaminsalesserver.onrender.com/api/products";
 
 export default function Outgoing() {
   const [visible, setVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
-  const [outgoingRecords, setOutgoingRecords] = useState([]); // Change state variable
+  const [outgoingRecords, setOutgoingRecords] = useLocalStorageState(
+    "outgoingRecords",
+    []
+  ); // Change state variable
   const [selectedRecord, setSelectedRecord] = useState(null);
+
+
 
   // Fetch records from the backend on component mount
   useEffect(() => {
@@ -19,9 +25,8 @@ export default function Outgoing() {
       try {
         const response = await fetch(`${API_URL}`);
         const data = await response.json();
-        setOutgoingRecords(data.outgoingRecords); // Change state update
-        console.log(data);
-        console.log(data.outgoingRecords);
+        setOutgoingRecords(data); // Change state update
+        console.log("Outgoing: ", data);
       } catch (error) {
         console.error("Error fetching records:", error);
       }
@@ -30,7 +35,9 @@ export default function Outgoing() {
   }, []);
 
   return (
-    <div className="outgoing-container"> {/* Update class name if needed */}
+    <div className="outgoing-container">
+      {" "}
+      {/* Update class name if needed */}
       {/* Add Record Dialog */}
       <Dialog
         header="Add Record"
@@ -51,7 +58,6 @@ export default function Outgoing() {
           setVisible={setVisible}
         />
       </Dialog>
-
       {/* Edit Record Dialog */}
       <Dialog
         header="Edit Record"
@@ -72,7 +78,6 @@ export default function Outgoing() {
           />
         )}
       </Dialog>
-
       <h2>Outgoing</h2> {/* Update header */}
       <div className="records">
         <div className="record-item header">
@@ -104,7 +109,7 @@ export default function Outgoing() {
           </div>
         ))}
       </div>
-      <div style={{height: "6rem"}}></div>
+      <div style={{ height: "6rem" }}></div>
       <AddRecordButton setVisible={setVisible} />
     </div>
   );
@@ -150,7 +155,8 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
 
     try {
       // Send a POST request to add the record
-      await fetch(`${API_URL}`, { // Adjusted to outgoing endpoint
+      await fetch(`${API_URL}`, {
+        // Adjusted to outgoing endpoint
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newRecord),
@@ -202,7 +208,11 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
         <input type="text" ref={EnteredRef} id="record-input" />
       </p>
       <div className="closing-buttons">
-        <button className="closing-button" onClick={addRecordItem}>
+        <button
+          className="closing-button"
+          onClick={addRecordItem}
+          disabled={!selectedProduct}
+        >
           Add Record
         </button>
         <button className="closing-button" onClick={() => setVisible(false)}>
@@ -279,14 +289,16 @@ function EditRecord({ record, setOutgoingRecords, setEditVisible }) {
         <button className="closing-button" onClick={updateRecordItem}>
           Save Changes
         </button>
-        <button className="closing-button" onClick={() => setEditVisible(false)}>
+        <button
+          className="closing-button"
+          onClick={() => setEditVisible(false)}
+        >
           Cancel
         </button>
       </div>
     </div>
   );
 }
-
 
 function AddRecordButton({ setVisible }) {
   return (
