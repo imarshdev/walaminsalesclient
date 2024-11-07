@@ -11,6 +11,7 @@ export default function Store() {
   const [newOpen, setNewOpen] = useState(false);
   const [newProductName, setNewProductName] = useState("");
   const [newProductQuantity, setNewProductQuantity] = useState(0); // Default to 0
+  const [newProductPrice, setNewProductPrice] = useState(0); // Default to 0
   const [spinning, setSpinning] = useState(false);
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export default function Store() {
         body: JSON.stringify({
           name: newProductName,
           quantity: newProductQuantity,
+          price: newProductPrice,
         }),
       });
 
@@ -60,7 +62,7 @@ export default function Store() {
         visible={newOpen}
         style={{
           width: "70vw",
-          height: "60vh",
+          height: "80vh",
           backgroundColor: "pink",
         }}
         onHide={() => setNewOpen(false)}
@@ -86,6 +88,14 @@ export default function Store() {
             type="number"
             value={newProductQuantity}
             onChange={(e) => setNewProductQuantity(parseInt(e.target.value))}
+            id="record-input"
+            style={{ width: "50%" }}
+          />
+          <p>Price per</p>
+          <input
+            type="number"
+            value={newProductPrice}
+            onChange={(e) => setNewProductPrice(parseInt(e.target.value))}
             id="record-input"
             style={{ width: "50%" }}
           />

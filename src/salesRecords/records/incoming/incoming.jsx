@@ -5,8 +5,7 @@ import { BiEdit } from "react-icons/bi";
 import useLocalStorageState from "../../../context/useLocalStorage";
 
 // API URLs for your backend
-const API_URL =
-  "https://walaminsalesserver.onrender.com/api/records?type=incoming";
+const API_URL = "https://walaminsalesserver.onrender.com/api/records";
 const PRODUCTS_URL = "https://walaminsalesserver.onrender.com/api/products";
 
 export default function Incoming() {
@@ -22,7 +21,7 @@ export default function Incoming() {
   useEffect(() => {
     const fetchRecords = async () => {
       try {
-        const response = await fetch(`${API_URL}`);
+        const response = await fetch(`${API_URL}?type=incoming`);
         const data = await response.json();
         setIncomingRecords(data);
         console.log("incoming", data);
@@ -115,8 +114,9 @@ export default function Incoming() {
 }
 
 function AddRecord({ setVisible, setIncomingRecords }) {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useLocalStorageState("products", []);
   const [selectedProduct, setSelectedProduct] = useState("");
+  const [username, setUsername] = useLocalStorageState("username", "");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -134,7 +134,6 @@ function AddRecord({ setVisible, setIncomingRecords }) {
   const SupplierRef = useRef();
   const ConditionRef = useRef();
   const CommentRef = useRef();
-  const EnteredRef = useRef();
 
   const addRecordItem = async () => {
     const quantity = parseInt(QuantityRef.current.value);
@@ -148,7 +147,7 @@ function AddRecord({ setVisible, setIncomingRecords }) {
       supplier: SupplierRef.current.value,
       condition: ConditionRef.current.value,
       comment: CommentRef.current.value,
-      enteredBy: EnteredRef.current.value,
+      enteredBy: username,
       date: new Date().toLocaleString(),
     };
 
@@ -195,15 +194,25 @@ function AddRecord({ setVisible, setIncomingRecords }) {
         <span>Cost :</span>
         <input type="text" ref={CostRef} id="record-input" />
         <span>Payment Method :</span>
-        <input type="text" ref={MethodRef} id="record-input" />
+        <select ref={MethodRef} id="record-input">
+          <option value="">Select Payment Method</option>
+          <option value="cash">Cash</option>
+          <option value="momo">Mobile Money (MoMo)</option>
+          <option value="credit-card">Credit Card</option>
+        </select>
+
         <span>Supplier :</span>
         <input type="text" ref={SupplierRef} id="record-input" />
         <span>Condition of Goods :</span>
-        <input type="text" ref={ConditionRef} id="record-input" />
+        <select ref={ConditionRef} id="record-input">
+          <option value="">Select Condition</option>
+          <option value="good">Good</option>
+          <option value="fair">Fair</option>
+          <option value="bad">Bad</option>
+        </select>
+
         <span>Additional Comment :</span>
         <input type="text" ref={CommentRef} id="record-input" />
-        <span>Entered by :</span>
-        <input type="text" ref={EnteredRef} id="record-input" />
       </p>
       <div className="closing-buttons">
         <button

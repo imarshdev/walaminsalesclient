@@ -5,7 +5,7 @@ import { BiEdit } from "react-icons/bi";
 import useLocalStorageState from "../../../context/useLocalStorage";
 
 // API URLs for your backend
-const API_URL = "https://walaminsalesserver.onrender.com/api/records?type=outgoing"; // Adjust if necessary
+const API_URL = "https://walaminsalesserver.onrender.com/api/records"; // Adjust if necessary
 const PRODUCTS_URL = "https://walaminsalesserver.onrender.com/api/products";
 
 export default function Outgoing() {
@@ -17,14 +17,11 @@ export default function Outgoing() {
   ); // Change state variable
   const [selectedRecord, setSelectedRecord] = useState(null);
 
-
-
-
   // Fetch records from the backend on component mount
   useEffect(() => {
     const fetchRecords = async () => {
       try {
-        const response = await fetch(`${API_URL}`);
+        const response = await fetch(`${API_URL}?type=outgoing`);
         const data = await response.json();
         setOutgoingRecords(data); // Change state update
         console.log("Outgoing: ", data);
@@ -37,7 +34,6 @@ export default function Outgoing() {
 
   return (
     <div className="outgoing-container">
-      {" "}
       {/* Update class name if needed */}
       {/* Add Record Dialog */}
       <Dialog
@@ -117,8 +113,11 @@ export default function Outgoing() {
 }
 
 function AddRecord({ setVisible, setOutgoingRecords }) {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useLocalStorageState("products", []);
   const [selectedProduct, setSelectedProduct] = useState("");
+  const [username, setUsername] = useLocalStorageState("username", "");
+  const [quantity, setQuantity] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -126,52 +125,58 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
       const data = await response.json();
       setProducts(data);
     };
-
     fetchProducts();
   }, []);
 
-  const QuantityRef = useRef();
-  const CostRef = useRef();
   const MethodRef = useRef();
   const SupplierRef = useRef();
   const ConditionRef = useRef();
   const CommentRef = useRef();
-  const EnteredRef = useRef();
+
+  const handleQuantityChange = (e) => {
+    const newQuantity = parseInt(e.target.value);
+    setQuantity(newQuantity);
+    const selectedProductPrice = products.find(
+      (product) => product.name === selectedProduct
+    ).price;
+    setTotalCost(newQuantity * selectedProductPrice);
+  };
 
   const addRecordItem = async () => {
-    const quantity = parseInt(QuantityRef.current.value);
-
     const newRecord = {
       id: Date.now().toString(),
       name: selectedProduct,
-      quantity: quantity,
-      cost: CostRef.current.value,
+      quantity,
+      cost: totalCost,
       method: MethodRef.current.value,
       supplier: SupplierRef.current.value,
       condition: ConditionRef.current.value,
       comment: CommentRef.current.value,
-      enteredBy: EnteredRef.current.value,
+      enteredBy: username,
       date: new Date().toLocaleString(),
     };
 
     try {
       // Send a POST request to add the record
-      await fetch(`${API_URL}`, {
-        // Adjusted to outgoing endpoint
+      await fetch(`${API_URL}/outgoing`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(newRecord),
       });
 
       // Update the product quantity in the backend
       await fetch(`${PRODUCTS_URL}/${selectedProduct}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quantityChange: -quantity }), // Reduce quantity
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ quantityChange: -quantity }),
       });
 
       // Update state to re-render
-      setOutgoingRecords((prev) => [...prev, newRecord]); // Update outgoing records
+      setOutgoingRecords((prev) => [...prev, newRecord]);
       setVisible(false);
     } catch (error) {
       console.error("Error adding record:", error);
@@ -194,19 +199,32 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
           ))}
         </select>
         <span>Quantity :</span>
-        <input type="number" ref={QuantityRef} id="record-input" />
+        <input
+          type="number"
+          value={quantity}
+          onChange={handleQuantityChange}
+          id="record-input"
+        />
         <span>Cost :</span>
-        <input type="text" ref={CostRef} id="record-input" />
+        <input type="text" value={totalCost} readOnly id="record-input" />
         <span>Payment Method :</span>
-        <input type="text" ref={MethodRef} id="record-input" />
+        <select ref={MethodRef} id="record-input">
+          <option value="">Select Payment Method</option>
+          <option value="cash">Cash</option>
+          <option value="momo">Mobile Money (MoMo)</option>
+          <option value="credit-card">Credit Card</option>
+        </select>
         <span>Supplier :</span>
         <input type="text" ref={SupplierRef} id="record-input" />
         <span>Condition of Goods :</span>
-        <input type="text" ref={ConditionRef} id="record-input" />
+        <select ref={ConditionRef} id="record-input">
+          <option value="">Select Condition</option>
+          <option value="good">Good</option>
+          <option value="fair">Fair</option>
+          <option value="bad">Bad</option>
+        </select>
         <span>Additional Comment :</span>
         <input type="text" ref={CommentRef} id="record-input" />
-        <span>Entered by :</span>
-        <input type="text" ref={EnteredRef} id="record-input" />
       </p>
       <div className="closing-buttons">
         <button
@@ -268,23 +286,63 @@ function EditRecord({ record, setOutgoingRecords, setEditVisible }) {
 
   return (
     <div className="edit-record-container">
-      <p>
+      <p className="m-0">
         <span>Product Name :</span>
-        <input type="text" ref={NameRef} defaultValue={record.name} />
+        <input
+          type="text"
+          ref={NameRef}
+          defaultValue={record.name}
+          id="record-input"
+        />
         <span>Quantity :</span>
-        <input type="number" ref={QuantityRef} defaultValue={record.quantity} />
+        <input
+          type="number"
+          ref={QuantityRef}
+          defaultValue={record.quantity}
+          id="record-input"
+        />
         <span>Cost :</span>
-        <input type="text" ref={CostRef} defaultValue={record.cost} />
+        <input
+          type="text"
+          ref={CostRef}
+          defaultValue={record.cost}
+          id="record-input"
+        />
         <span>Payment Method :</span>
-        <input type="text" ref={MethodRef} defaultValue={record.method} />
+        <input
+          type="text"
+          ref={MethodRef}
+          defaultValue={record.method}
+          id="record-input"
+        />
         <span>Supplier :</span>
-        <input type="text" ref={SupplierRef} defaultValue={record.supplier} />
+        <input
+          type="text"
+          ref={SupplierRef}
+          defaultValue={record.supplier}
+          id="record-input"
+        />
         <span>Condition of Goods :</span>
-        <input type="text" ref={ConditionRef} defaultValue={record.condition} />
+        <input
+          type="text"
+          ref={ConditionRef}
+          defaultValue={record.condition}
+          id="record-input"
+        />
         <span>Additional Comment :</span>
-        <input type="text" ref={CommentRef} defaultValue={record.comment} />
+        <input
+          type="text"
+          ref={CommentRef}
+          defaultValue={record.comment}
+          id="record-input"
+        />
         <span>Entered by :</span>
-        <input type="text" ref={EnteredRef} defaultValue={record.enteredBy} />
+        <input
+          type="text"
+          ref={EnteredRef}
+          defaultValue={record.enteredBy}
+          id="record-input"
+        />
       </p>
       <div className="closing-buttons">
         <button className="closing-button" onClick={updateRecordItem}>
