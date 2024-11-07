@@ -50,6 +50,7 @@ export default function Store() {
       setProducts((prev) => [...prev, addedProduct]);
       setNewProductName("");
       setNewProductQuantity(0);
+      setNewProductPrice(0);
       setSpinning(false);
     } catch (error) {
       console.error("Error adding product:", error);
