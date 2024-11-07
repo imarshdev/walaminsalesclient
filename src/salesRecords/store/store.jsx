@@ -29,6 +29,7 @@ export default function Store() {
 
   const addNewProduct = async () => {
     setSpinning(true);
+    setNewOpen(false); // Close the dialog
     try {
       const response = await fetch(`${PRODUCTS_URL}`, {
         method: "POST",
@@ -48,7 +49,6 @@ export default function Store() {
       setNewProductName("");
       setNewProductQuantity(0);
       setSpinning(false);
-      setNewOpen(false); // Close the dialog
     } catch (error) {
       console.error("Error adding product:", error);
     }

@@ -19,6 +19,7 @@ export default function Outgoing() {
 
 
 
+
   // Fetch records from the backend on component mount
   useEffect(() => {
     const fetchRecords = async () => {

@@ -5,7 +5,8 @@ import { BiEdit } from "react-icons/bi";
 import useLocalStorageState from "../../../context/useLocalStorage";
 
 // API URLs for your backend
-const API_URL = "https://walaminsalesserver.onrender.com/api/records?type=incoming";
+const API_URL =
+  "https://walaminsalesserver.onrender.com/api/records?type=incoming";
 const PRODUCTS_URL = "https://walaminsalesserver.onrender.com/api/products";
 
 export default function Incoming() {
@@ -119,7 +120,7 @@ function AddRecord({ setVisible, setIncomingRecords }) {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch(`${PRODUCTS_URL}/incoming`);
+      const response = await fetch(`${PRODUCTS_URL}`);
       const data = await response.json();
       setProducts(data);
     };
@@ -205,7 +206,11 @@ function AddRecord({ setVisible, setIncomingRecords }) {
         <input type="text" ref={EnteredRef} id="record-input" />
       </p>
       <div className="closing-buttons">
-        <button className="closing-button" onClick={addRecordItem}>
+        <button
+          className="closing-button"
+          onClick={addRecordItem}
+          disabled={!selectedProduct}
+        >
           Add Record
         </button>
         <button className="closing-button" onClick={() => setVisible(false)}>
