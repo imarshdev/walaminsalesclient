@@ -7,7 +7,7 @@ import useLocalStorageState from "../../../context/useLocalStorage";
 // API URLs for your backend
 const API_URL = "https://walaminsalesserver.onrender.com/api/records"; // Adjust if necessary
 const PRODUCTS_URL = "https://walaminsalesserver.onrender.com/api/products";
-
+const CUSTOMER_URL = "https://walaminsalesserver.onrender.com";
 export default function Outgoing() {
   const [visible, setVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
@@ -91,7 +91,7 @@ export default function Outgoing() {
             <span style={{ width: "13rem" }}>{record.date}</span>
             <span style={{ width: "13rem" }}>{record.name}</span>
             <span>{record.quantity}</span>
-            <span>{record.cost}</span>
+            <span>{record.salesPrice}</span>
             <span>{record.supplier}</span>
             <span>{record.enteredBy}</span>
             <button
@@ -118,6 +118,9 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
   const [username, setUsername] = useLocalStorageState("username", "");
   const [quantity, setQuantity] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
+  const [supplier, setSupplier] = useState();
+  const [customers, setCustomers] = useLocalStorageState("customers", []);
+  const [selectedCustomer, setSelectedCustomer] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -128,8 +131,25 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const response = await fetch(`${CUSTOMER_URL}/api/customers`);
+        const data = await response.json();
+        console.log("customers", data);
+        setCustomers(data);
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+      }
+    };
+    fetchCustomers();
+  }, []);
+
+  const handleCustomerChange = (e) => {
+    setSelectedCustomer(e.target.value);
+  };
+
   const MethodRef = useRef();
-  const SupplierRef = useRef();
   const ConditionRef = useRef();
   const CommentRef = useRef();
 
@@ -138,7 +158,7 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
     setQuantity(newQuantity);
     const selectedProductPrice = products.find(
       (product) => product.name === selectedProduct
-    ).price;
+    ).salesPrice;
     setTotalCost(newQuantity * selectedProductPrice);
   };
 
@@ -149,7 +169,7 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
       quantity,
       cost: totalCost,
       method: MethodRef.current.value,
-      supplier: SupplierRef.current.value,
+      supplier: selectedCustomer,
       condition: ConditionRef.current.value,
       comment: CommentRef.current.value,
       enteredBy: username,
@@ -214,8 +234,15 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
           <option value="momo">Mobile Money (MoMo)</option>
           <option value="credit-card">Credit Card</option>
         </select>
-        <span>Supplier :</span>
-        <input type="text" ref={SupplierRef} id="record-input" />
+        <span>Customer :</span>
+        <select onChange={handleCustomerChange} id="record-input">
+          <option value="">Select a customer</option>
+          {customers.map((customer) => (
+            <option key={customer._id} value={customer.name}>
+              {customer.name} - ({customer.business})
+            </option>
+          ))}
+        </select>
         <span>Condition of Goods :</span>
         <select ref={ConditionRef} id="record-input">
           <option value="">Select Condition</option>

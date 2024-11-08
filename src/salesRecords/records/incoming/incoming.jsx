@@ -91,7 +91,7 @@ export default function Incoming() {
             <span style={{ width: "13rem" }}>{record.date}</span>
             <span style={{ width: "13rem" }}>{record.name}</span>
             <span>{record.quantity}</span>
-            <span>{record.cost}</span>
+            <span>{record.costPrice}</span>
             <span>{record.supplier}</span>
             <span>{record.enteredBy}</span>
             <button
@@ -117,6 +117,9 @@ function AddRecord({ setVisible, setIncomingRecords }) {
   const [products, setProducts] = useLocalStorageState("products", []);
   const [selectedProduct, setSelectedProduct] = useState("");
   const [username, setUsername] = useLocalStorageState("username", "");
+  const [quantity, setQuantity] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
+  const [suppliedby, setSuppliedby] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -128,23 +131,31 @@ function AddRecord({ setVisible, setIncomingRecords }) {
     fetchProducts();
   }, []);
 
-  const QuantityRef = useRef();
-  const CostRef = useRef();
   const MethodRef = useRef();
-  const SupplierRef = useRef();
   const ConditionRef = useRef();
   const CommentRef = useRef();
 
-  const addRecordItem = async () => {
-    const quantity = parseInt(QuantityRef.current.value);
+  const handleQuantityChange = (e) => {
+    const newQuantity = parseInt(e.target.value);
+    setQuantity(newQuantity);
+    const selectedProductPrice = products.find(
+      (product) => product.name === selectedProduct
+    ).costPrice;
+    setTotalCost(newQuantity * selectedProductPrice);
+    const selectedSupplier = products.find(
+      (product) => product.name === selectedProduct
+    ).supplier;
+    setSuppliedby(selectedSupplier);
+  };
 
+  const addRecordItem = async () => {
     const newRecord = {
       id: Date.now().toString(),
       name: selectedProduct,
       quantity: quantity,
-      cost: CostRef.current.value,
+      cost: totalCost,
       method: MethodRef.current.value,
-      supplier: SupplierRef.current.value,
+      supplier: suppliedby,
       condition: ConditionRef.current.value,
       comment: CommentRef.current.value,
       enteredBy: username,
@@ -190,9 +201,14 @@ function AddRecord({ setVisible, setIncomingRecords }) {
           ))}
         </select>
         <span>Quantity :</span>
-        <input type="number" ref={QuantityRef} id="record-input" />
+        <input
+          type="number"
+          value={quantity}
+          onChange={handleQuantityChange}
+          id="record-input"
+        />
         <span>Cost :</span>
-        <input type="text" ref={CostRef} id="record-input" />
+        <input type="text" value={totalCost} readOnly id="record-input" />
         <span>Payment Method :</span>
         <select ref={MethodRef} id="record-input">
           <option value="">Select Payment Method</option>
@@ -202,7 +218,7 @@ function AddRecord({ setVisible, setIncomingRecords }) {
         </select>
 
         <span>Supplier :</span>
-        <input type="text" ref={SupplierRef} id="record-input" />
+        <input type="text" value={suppliedby} id="record-input" />
         <span>Condition of Goods :</span>
         <select ref={ConditionRef} id="record-input">
           <option value="">Select Condition</option>
