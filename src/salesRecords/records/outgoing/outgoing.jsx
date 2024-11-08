@@ -81,7 +81,7 @@ export default function Outgoing() {
           <span style={{ width: "13rem" }}>Date & Time</span>
           <span style={{ width: "13rem" }}>Product</span>
           <span>Quantity</span>
-          <span>Cost</span>
+          <span>Cost (shs.)</span>
           <span>Supplied to</span> {/* Change label if needed */}
           <span>Recorded By</span>
           <span style={{ width: "5rem" }}></span>

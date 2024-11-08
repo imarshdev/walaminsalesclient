@@ -127,6 +127,10 @@ export default function Store() {
               <b style={{ marginRight: "15px" }}>Current Quantity:</b>{" "}
               {product.quantity}
             </span>
+            <span>
+              <b style={{ marginRight: "15px" }}>Unit Price:</b>{" "}
+              shs. {product.price}
+            </span>
           </div>
         ))}
       </div>

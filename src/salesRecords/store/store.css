@@ -12,7 +12,7 @@
 .product-items{
     width: 32%;
     margin-right: 1%;
-    height: 5rem;
+    height: 6rem;
     display: flex;
     flex-direction: column;
     background-color: #ccc;
