@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useLocalStorageState from "../context/useLocalStorage";
 import { users } from "./users"; // Import the users array
 import { useNavigate } from "react-router-dom";
@@ -14,7 +14,6 @@ const SignIn = () => {
   const handleLogin = () => {
     const user = users.find((u) => u.name === selectedUser);
     if (user && user.password === password) {
-      setUsername(selectedUser); // Set username in localStorage
       setError("");
       setSelectedUser("");
       setPassword("");
@@ -23,6 +22,9 @@ const SignIn = () => {
       setError("Invalid username or password");
     }
   };
+  useEffect(() => {
+    console.log(`username: ${username}`);
+  }, [username]);
 
   return (
     <div
@@ -44,7 +46,9 @@ const SignIn = () => {
             padding: "0px 10px",
             boxSizing: "border-box",
           }}
-          onChange={(e) => setSelectedUser(e.target.value)}
+          onChange={(e) => {
+            setSelectedUser(e.target.value), setUsername(e.target.value);
+          }}
           value={selectedUser}
         >
           <option value="">Select User</option>

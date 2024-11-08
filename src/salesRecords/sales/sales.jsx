@@ -4,12 +4,31 @@ import useLocalStorageState from "../../context/useLocalStorage";
 import Incoming from "../records/incoming/incoming";
 import Outgoing from "../records/outgoing/outgoing";
 import Store from "../store/store";
+import { useNavigate } from "react-router-dom";
 
 export default function SalesPage() {
   const [sales, setSales] = useLocalStorageState("sales", 1);
+  const [username, setUsername] = useLocalStorageState("username", "");
+  const navigate = useNavigate();
+  const clearStorage = () => {
+    localStorage.clear();
+    navigate("/");
+  };
   return (
     <div className="sales-container">
-      <h3>Walamin Sales</h3>
+      <h3
+        style={{
+          width: "95%",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <span>user: {username ? username : "no user"}</span>
+        Walamin Sales
+        <span style={{ cursor: "pointer" }} onClick={clearStorage}>
+          Log Out
+        </span>
+      </h3>
       <div className="sales-table-nav">
         <button
           id={sales === 1 ? "open" : ""}

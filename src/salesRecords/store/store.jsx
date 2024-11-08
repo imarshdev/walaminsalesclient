@@ -24,6 +24,11 @@ export default function Store() {
   const [customerOpen, setCustomerOpen] = useState(false);
   const [error, setError] = useState("");
 
+
+  useEffect(() => {
+    console.log(`Local Storage: ${JSON.stringify(localStorage, null, 2)}`);
+  }, []);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
