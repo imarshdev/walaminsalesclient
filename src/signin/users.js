@@ -3,4 +3,5 @@ export const users = [
   { name: "Mansur", password: "mansur123" },
   { name: "Wala", password: "wala123" },
   { name: "Lovence", password: "lovence123" },
+  { name: "Samir", password: "samir123" },
 ];

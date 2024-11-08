@@ -9,6 +9,7 @@ const PRODUCTS_URL = `${API_URL}/api/products`;
 const CUSTOMERS_URL = `${API_URL}/api/customers`;
 
 export default function Store() {
+  const [page, setPage] = useLocalStorageState("page", "products");
   const [products, setProducts] = useLocalStorageState("products", []);
   const [customers, setCustomers] = useLocalStorageState("customers", []);
   const [newOpen, setNewOpen] = useState(false);
@@ -36,6 +37,20 @@ export default function Store() {
     };
     fetchProducts();
   }, [setProducts]);
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const response = await fetch(CUSTOMERS_URL);
+        const data = await response.json();
+        setCustomers(data);
+      } catch (error) {
+        setError("Failed to fetch customers");
+        console.error(error);
+      }
+    };
+    fetchCustomers();
+  }, [setCustomers, CUSTOMERS_URL]);
 
   useEffect(() => {
     console.log("Products:", products);
@@ -102,7 +117,6 @@ export default function Store() {
   return (
     <div className="store-container">
       {error && <p className="error-message">{error}</p>}
-
       <Dialog
         visible={newOpen}
         style={{
@@ -198,54 +212,121 @@ export default function Store() {
           setCustomers={setCustomers}
         />
       </Dialog>
-      <br />
-      <div className="product-items-container">
-        {products.map((product, index) => (
-          <div className="product-items" key={index}>
-            <span>
-              <b style={{ marginRight: "15px" }}>Name:</b> {product.name}
-            </span>
-            <span>
-              <b style={{ marginRight: "15px" }}>Current Quantity:</b>{" "}
-              {product.quantity}
-            </span>
-            <span>
-              <b style={{ marginRight: "15px" }}>Unit Price:</b> shs.{" "}
-              {product.salesPrice}
-            </span>
+      <h3
+        style={{
+          width: "40%",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <p
+          onClick={() => setPage("products")}
+          style={{
+            borderBottom: page === "products" ? "solid 1px black" : "",
+            width: "12rem",
+          }}
+        >
+          Store Products
+        </p>
+        <p
+          onClick={() => setPage("customers")}
+          style={{
+            borderBottom: page === "customers" ? "solid 1px black" : "",
+            width: "12rem",
+          }}
+        >
+          Store customers
+        </p>
+      </h3>
+      {/* Update header */}
+      {page === "products" && (
+        <>
+          <div className="product-items-container">
+            {products.map((product, index) => (
+              <div className="product-items" key={index}>
+                <span>
+                  <b style={{ marginRight: "15px" }}>Name:</b> {product.name}
+                </span>
+                <span>
+                  <b style={{ marginRight: "15px" }}>Current Quantity:</b>{" "}
+                  {product.quantity}
+                </span>
+                <span>
+                  <b style={{ marginRight: "15px" }}>Unit Price:</b> shs.{" "}
+                  {product.costPrice}
+                </span>
+                <span>
+                  <b style={{ marginRight: "15px" }}>Sales Price:</b> shs.{" "}
+                  {product.salesPrice}
+                </span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <button
-        style={{
-          backgroundColor: "lime",
-          marginRight: "20px",
-          position: "fixed",
-          left: "20px",
-          bottom: "20px",
-        }}
-        onClick={() => setNewOpen(true)}
-      >
-        <p>Add New Product</p>
-      </button>
-      <button
-        style={{
-          backgroundColor: "lime",
-          marginRight: "20px",
-          position: "fixed",
-          left: "260px",
-          bottom: "20px",
-        }}
-        onClick={() => setCustomerOpen(true)}
-      >
-        <p>Add New Customer</p>
-      </button>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <button
+            style={{
+              backgroundColor: "lime",
+              marginRight: "20px",
+              position: "fixed",
+              left: "20px",
+              bottom: "20px",
+            }}
+            onClick={() => setNewOpen(true)}
+          >
+            <p>Add New Product</p>
+          </button>
+        </>
+      )}
+      {page === "customers" && (
+        <>
+          <div className="customer-items-container">
+            {customers.map((customer, index) => (
+              <div
+                className="customer-items"
+                key={index}
+                style={{ borderBottom: "solid 1px #ccc", marginBottom: "20px" }}
+              >
+                <span style={{ marginRight: "25px" }}>
+                  <b>Name:</b> {customer.name}
+                </span>
+                <span style={{ marginRight: "25px" }}>
+                  <b>Business:</b> {customer.business}
+                </span>
+                <span style={{ marginRight: "25px" }}>
+                  <b>Location:</b> {customer.location}
+                </span>
+                <span style={{ marginRight: "25px" }}>
+                  <b>Contact:</b> {customer.contact}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <button
+            style={{
+              backgroundColor: "lime",
+              marginRight: "20px",
+              position: "fixed",
+              left: "20px",
+              bottom: "20px",
+            }}
+            onClick={() => setCustomerOpen(true)}
+          >
+            <p>Add New Customer</p>
+          </button>
+        </>
+      )}
     </div>
   );
 }
@@ -386,20 +467,18 @@ export function NewCustomer({ setCustomerOpen, setCustomers }) {
   );
 }
 
-
-
 export const formatContactNumber = (value) => {
   // Remove all non-digit characters
   const digits = value.replace(/\D/g, "");
-  
+
   // If it starts with '07', replace it with '+256 7'
   let formattedNumber = digits.startsWith("07") ? "+256 7" : digits;
-  
+
   // Split the number into chunks and add spaces
   const chunks = formattedNumber.match(/(\+256\s7\d{0,3})|(\d{1,3})/g);
   if (chunks) {
     formattedNumber = chunks.join(" ").trim();
   }
-  
+
   return formattedNumber;
 };

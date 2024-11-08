@@ -91,7 +91,7 @@ export default function Outgoing() {
             <span style={{ width: "13rem" }}>{record.date}</span>
             <span style={{ width: "13rem" }}>{record.name}</span>
             <span>{record.quantity}</span>
-            <span>{record.salesPrice}</span>
+            <span>{record.cost}</span>
             <span>{record.supplier}</span>
             <span>{record.enteredBy}</span>
             <button
