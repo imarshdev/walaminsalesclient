@@ -214,7 +214,7 @@ function AddRecord({ setVisible, setIncomingRecords }) {
           <option value="">Select Payment Method</option>
           <option value="cash">Cash</option>
           <option value="momo">Mobile Money (MoMo)</option>
-          <option value="credit-card">Credit Card</option>
+          <option value="credit-card">Credit</option>
         </select>
 
         <span>Supplier :</span>
