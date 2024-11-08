@@ -73,7 +73,6 @@ export default function Store() {
           name: newProductName,
           quantity: newProductQuantity,
           costPrice: newProductPrice,
-          salesPrice: newProductSalesPrice,
           supplier: newProductSupplier,
           supplierContact: newProductSupplierContact, // Now formatted
         }),
@@ -164,14 +163,6 @@ export default function Store() {
             id="record-input"
             style={{ width: "50%" }}
           />
-          <span>Unit Price (sales price)</span>
-          <input
-            type="number"
-            value={newProductSalesPrice}
-            onChange={(e) => setNewProductSalesPrice(parseInt(e.target.value))}
-            id="record-input"
-            style={{ width: "50%" }}
-          />
           <span>Supplier</span>
           <input
             type="text"
@@ -259,10 +250,6 @@ export default function Store() {
                 <span>
                   <b style={{ marginRight: "15px" }}>Unit Price:</b> shs.{" "}
                   {product.costPrice}
-                </span>
-                <span>
-                  <b style={{ marginRight: "15px" }}>Sales Price:</b> shs.{" "}
-                  {product.salesPrice}
                 </span>
               </div>
             ))}

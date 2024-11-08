@@ -117,6 +117,7 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [username, setUsername] = useLocalStorageState("username", "");
   const [quantity, setQuantity] = useState(0);
+  const [salesPrice, setSalesPrice] = useState(0); // New state for manual price entry
   const [totalCost, setTotalCost] = useState(0);
   const [supplier, setSupplier] = useState();
   const [customers, setCustomers] = useLocalStorageState("customers", []);
@@ -136,7 +137,6 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
       try {
         const response = await fetch(`${CUSTOMER_URL}/api/customers`);
         const data = await response.json();
-        console.log("customers", data);
         setCustomers(data);
       } catch (error) {
         console.error("Error fetching customers:", error);
@@ -156,10 +156,13 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value);
     setQuantity(newQuantity);
-    const selectedProductPrice = products.find(
-      (product) => product.name === selectedProduct
-    ).salesPrice;
-    setTotalCost(newQuantity * selectedProductPrice);
+    setTotalCost(newQuantity * salesPrice); // Calculate total cost with manual sales price
+  };
+
+  const handleSalesPriceChange = (e) => {
+    const newSalesPrice = parseFloat(e.target.value);
+    setSalesPrice(newSalesPrice);
+    setTotalCost(quantity * newSalesPrice); // Recalculate total cost on price change
   };
 
   const addRecordItem = async () => {
@@ -177,7 +180,6 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
     };
 
     try {
-      // Send a POST request to add the record
       await fetch(`${API_URL}/outgoing`, {
         method: "POST",
         headers: {
@@ -186,7 +188,6 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
         body: JSON.stringify(newRecord),
       });
 
-      // Update the product quantity in the backend
       await fetch(`${PRODUCTS_URL}/${selectedProduct}`, {
         method: "PUT",
         headers: {
@@ -195,7 +196,6 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
         body: JSON.stringify({ quantityChange: -quantity }),
       });
 
-      // Update state to re-render
       setOutgoingRecords((prev) => [...prev, newRecord]);
       setVisible(false);
     } catch (error) {
@@ -223,6 +223,13 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
           type="number"
           value={quantity}
           onChange={handleQuantityChange}
+          id="record-input"
+        />
+        <span>Sales Price :</span>
+        <input
+          type="number"
+          value={salesPrice}
+          onChange={handleSalesPriceChange}
           id="record-input"
         />
         <span>Cost :</span>
