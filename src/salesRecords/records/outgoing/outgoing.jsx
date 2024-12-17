@@ -177,10 +177,7 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
       name: selectedProduct,
       quantity,
       cost: totalCost,
-      method: MethodRef.current.value,
       supplier: selectedCustomer,
-      condition: ConditionRef.current.value,
-      comment: CommentRef.current.value,
       enteredBy: username,
       date: new Date().toLocaleString(),
     };
@@ -245,7 +242,7 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
           <option value="">Select a customer</option>
           {customers.map((customer) => (
             <option key={customer._id} value={customer.name}>
-              {customer.name} - ({customer.business})
+              {customer.name}
             </option>
           ))}
         </select>
