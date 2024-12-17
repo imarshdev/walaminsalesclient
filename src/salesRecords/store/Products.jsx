@@ -20,7 +20,6 @@ export default function Products() {
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
-      console.log(`Data: ${JSON.stringify(data)}`);
       setProducts(data);
     } catch (error) {
       setError("Failed to fetch products");
