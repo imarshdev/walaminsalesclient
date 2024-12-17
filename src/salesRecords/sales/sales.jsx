@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./sales.css";
 import useLocalStorageState from "../../context/useLocalStorage";
 import Incoming from "../records/incoming/incoming";
@@ -10,6 +10,7 @@ import { InputText } from "primereact/inputtext";
 import { useNavigate } from "react-router-dom";
 
 export default function SalesPage() {
+  const [focused, setFocused] = useState(false);
   const [sales, setSales] = useLocalStorageState("sales", 1);
   const [username, setUsername] = useLocalStorageState("username", "");
   const navigate = useNavigate();
@@ -33,9 +34,13 @@ export default function SalesPage() {
         </span>
       </h3>
       <div className="sales-table-nav">
-        <IconField iconPosition="left" style={{width: "75%"}}>
+        <IconField iconPosition="left" style={{ width: "75%" }}>
           <InputIcon className="pi pi-search"> </InputIcon>
-          <InputText placeholder="Search Store" style={{width: "100%"}}/>
+          <InputText
+            placeholder="Search Store"
+            onFocus={() => setFocused(true)}
+            style={{ width: "100%" }}
+          />
         </IconField>
       </div>
       <div className="sales-table-nav">
