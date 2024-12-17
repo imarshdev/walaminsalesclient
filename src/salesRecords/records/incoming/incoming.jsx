@@ -154,10 +154,7 @@ function AddRecord({ setVisible, setIncomingRecords }) {
       name: selectedProduct,
       quantity: quantity,
       cost: totalCost,
-      method: MethodRef.current.value,
       supplier: suppliedby,
-      condition: ConditionRef.current.value,
-      comment: CommentRef.current.value,
       enteredBy: username,
       date: new Date().toLocaleString(),
     };
