@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dialog } from "primereact/dialog";
-import { ProgressSpinner } from "primereact/progressspinner"; // Import the spinner
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const API_URL = "https://walaminsalesserver.onrender.com/api/products";
 
@@ -10,7 +10,7 @@ const EditProductDialogue = ({ open, onClose, product, refreshProducts }) => {
   const [costPrice, setCostPrice] = useState("");
   const [supplier, setSupplier] = useState("");
   const [supplierContact, setSupplierContact] = useState("");
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (product) {
@@ -25,25 +25,26 @@ const EditProductDialogue = ({ open, onClose, product, refreshProducts }) => {
   const handleSave = async () => {
     setLoading(true); // Show spinner
     try {
-      const updatedProduct = {
+      const newDetails = {
         name,
-        quantity,
-        costPrice,
+        quantity: Number(quantity),
+        costPrice: Number(costPrice),
         supplier,
         supplierContact,
       };
 
-      const response = await fetch(`${API_URL}/${product._id}`, {
+      // Send new details to the edit endpoint
+      const response = await fetch(`${API_URL}/${product.name}/edit`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedProduct),
+        body: JSON.stringify({ newDetails }),
       });
 
       if (response.ok) {
-        refreshProducts();
-        onClose();
+        refreshProducts(); // Refresh the product list after successful update
+        onClose(); // Close the dialog
       } else {
         console.error("Failed to update product:", response.statusText);
       }
@@ -62,8 +63,8 @@ const EditProductDialogue = ({ open, onClose, product, refreshProducts }) => {
       });
 
       if (response.ok) {
-        refreshProducts();
-        onClose();
+        refreshProducts(); // Refresh the product list after successful deletion
+        onClose(); // Close the dialog
       } else {
         console.error("Failed to delete product:", response.statusText);
       }
@@ -136,7 +137,6 @@ const EditProductDialogue = ({ open, onClose, product, refreshProducts }) => {
           />
         </div>
 
-        {/* Display spinner if loading */}
         {loading && <ProgressSpinner style={{ width: "50px", height: "50px" }} />}
 
         <br />
@@ -170,7 +170,7 @@ const EditProductDialogue = ({ open, onClose, product, refreshProducts }) => {
             className="closing-button"
             type="button"
             onClick={handleSave}
-            style={{ margin: "0 10px", color: "#fff" }}
+            style={{ margin: "0 10px", color: "#fff", backgroundColor: "#28a745" }}
           >
             Save
           </button>
