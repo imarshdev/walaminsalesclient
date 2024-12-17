@@ -200,6 +200,7 @@ function AddRecord({ setVisible, setIncomingRecords }) {
             </option>
           ))}
         </select>
+        <br />
         <span>Quantity :</span>
         <input
           type="number"
@@ -207,28 +208,9 @@ function AddRecord({ setVisible, setIncomingRecords }) {
           onChange={handleQuantityChange}
           id="record-input"
         />
+        <br />
         <span>Cost :</span>
         <input type="text" value={totalCost} readOnly id="record-input" />
-        <span>Payment Method :</span>
-        <select ref={MethodRef} id="record-input">
-          <option value="">Select Payment Method</option>
-          <option value="cash">Cash</option>
-          <option value="momo">Mobile Money (MoMo)</option>
-          <option value="credit-card">Credit</option>
-        </select>
-
-        <span>Supplier :</span>
-        <input type="text" value={suppliedby} id="record-input" />
-        <span>Condition of Goods :</span>
-        <select ref={ConditionRef} id="record-input">
-          <option value="">Select Condition</option>
-          <option value="good">Good</option>
-          <option value="fair">Fair</option>
-          <option value="bad">Bad</option>
-        </select>
-
-        <span>Additional Comment :</span>
-        <input type="text" ref={CommentRef} id="record-input" />
       </p>
       <div className="closing-buttons">
         <button

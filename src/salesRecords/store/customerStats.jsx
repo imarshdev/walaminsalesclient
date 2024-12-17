@@ -100,7 +100,6 @@ export function CustomerStatsDialog({ customer, onClose }) {
       style={{
         width: "100%",
         height: "100vh",
-        padding: 0,
         margin: 0,
         position: "fixed",
         top: 0,

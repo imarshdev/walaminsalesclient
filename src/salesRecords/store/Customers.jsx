@@ -57,6 +57,7 @@ export default function Customers() {
           </div>
         ))}
       </div>
+      <div style={{ width: "100%", height: "10rem" }}></div>
       <button
         style={{
           backgroundColor: "lime",

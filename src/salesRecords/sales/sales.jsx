@@ -4,6 +4,9 @@ import useLocalStorageState from "../../context/useLocalStorage";
 import Incoming from "../records/incoming/incoming";
 import Outgoing from "../records/outgoing/outgoing";
 import Store from "../store/store";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
+import { InputText } from "primereact/inputtext";
 import { useNavigate } from "react-router-dom";
 
 export default function SalesPage() {
@@ -29,6 +32,12 @@ export default function SalesPage() {
           Log Out
         </span>
       </h3>
+      <div className="sales-table-nav">
+        <IconField iconPosition="left" style={{width: "75%"}}>
+          <InputIcon className="pi pi-search"> </InputIcon>
+          <InputText placeholder="Search Store" style={{width: "100%"}}/>
+        </IconField>
+      </div>
       <div className="sales-table-nav">
         <button
           id={sales === 1 ? "open" : ""}

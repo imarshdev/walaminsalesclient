@@ -20,6 +20,7 @@ export default function Products() {
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
+      console.log(`Data: ${JSON.stringify(data)}`);
       setProducts(data);
     } catch (error) {
       setError("Failed to fetch products");
@@ -59,6 +60,7 @@ export default function Products() {
           </div>
         ))}
       </div>
+      <div style={{ width: "100%", height: "10rem" }}></div>
       <button
         style={{
           backgroundColor: "lime",

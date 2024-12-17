@@ -18,7 +18,7 @@
 
 .add-record-container { /* Corrected typo from 'add-record-conatiner' to 'add-record-container' */
     width: 100%;
-    height: 120%;
+    height: 100%;
     box-sizing: border-box;
     padding: 2rem 0px;
     scrollbar-width: none;

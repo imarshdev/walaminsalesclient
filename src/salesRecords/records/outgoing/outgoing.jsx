@@ -23,8 +23,14 @@ export default function Outgoing() {
       try {
         const response = await fetch(`${API_URL}?type=outgoing`);
         const data = await response.json();
-        setOutgoingRecords(data); // Change state update
-        console.log("Outgoing: ", data);
+  
+        // Sort by date descending
+        const sortedData = data.sort(
+          (a, b) => new Date(b.date) - new Date(a.date) // Convert date strings to Date objects
+        );
+  
+        setOutgoingRecords(sortedData);
+        console.log("Outgoing Records (Sorted):", sortedData);
       } catch (error) {
         console.error("Error fetching records:", error);
       }
@@ -234,13 +240,6 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
         />
         <span>Cost :</span>
         <input type="text" value={totalCost} readOnly id="record-input" />
-        <span>Payment Method :</span>
-        <select ref={MethodRef} id="record-input">
-          <option value="">Select Payment Method</option>
-          <option value="cash">Cash</option>
-          <option value="momo">Mobile Money (MoMo)</option>
-          <option value="credit-card">Credit</option>
-        </select>
         <span>Customer :</span>
         <select onChange={handleCustomerChange} id="record-input">
           <option value="">Select a customer</option>
@@ -250,15 +249,6 @@ function AddRecord({ setVisible, setOutgoingRecords }) {
             </option>
           ))}
         </select>
-        <span>Condition of Goods :</span>
-        <select ref={ConditionRef} id="record-input">
-          <option value="">Select Condition</option>
-          <option value="good">Good</option>
-          <option value="fair">Fair</option>
-          <option value="bad">Bad</option>
-        </select>
-        <span>Additional Comment :</span>
-        <input type="text" ref={CommentRef} id="record-input" />
       </p>
       <div className="closing-buttons">
         <button
