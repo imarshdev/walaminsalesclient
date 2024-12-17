@@ -57,7 +57,7 @@ const EditProductDialogue = ({ open, onClose, product, refreshProducts }) => {
   const handleDelete = async () => {
     setLoading(true); // Show spinner
     try {
-      const response = await fetch(`${API_URL}/${product._id}`, {
+      const response = await fetch(`${API_URL}/${product.name}`, {
         method: "DELETE",
       });
 
